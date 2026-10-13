@@ -1,0 +1,19 @@
+BLACK AI - BLACK CORPORATION (versão final)
+
+Site estático (PWA). Sem servidor e sem chaves.
+
+PUBLICAR (grátis):
+- GitHub Pages: suba TODOS os arquivos na raiz do repositório > Settings > Pages > Branch main.
+- Render: New > Static Site > Build Command vazio > Publish Directory "."
+- Netlify / Cloudflare Pages: arraste a pasta.
+
+INSTALAR NO CELULAR:
+- Android (Chrome): menu ⋮ > Instalar app / Adicionar à tela inicial.
+- iPhone (Safari): Compartilhar > Adicionar à Tela de Início.
+
+TESTAR NO PC: nesta pasta rode  python3 -m http.server 8000  e abra http://localhost:8000
+
+NOTAS:
+- O login é local (dados ficam só no aparelho de cada pessoa).
+- Ao publicar uma atualização, mude o número em sw.js (CACHE = 'black-ai-v3', ...).
+- A IA vem do Pollinations (gratuito, pode ter limites ou mudar).

@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08090d">
+<meta name="description" content="BLACK AI — assistente da BLACK CORPORATION.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+<title>BLACK AI — BLACK CORPORATION</title>
+</head>
+<body>
+
+<!-- ============ LOGIN ============ -->
+<div id="login" class="login hidden">
+  <form id="loginForm" class="login-card" autocomplete="off" novalidate>
+    <img class="login-logo" src="logo.svg" alt="BLACK AI">
+    <div class="eyebrow">BLACK CORPORATION</div>
+    <h2 id="loginTitle">Criar acesso</h2>
+    <p id="loginSub" class="login-sub"></p>
+
+    <div id="regFields">
+      <label for="lgNome">Nome</label>
+      <input id="lgNome" type="text" maxlength="40" autocomplete="name" placeholder="O seu nome">
+      <label for="lgNumero">Número de telefone</label>
+      <input id="lgNumero" type="tel" inputmode="tel" maxlength="20" placeholder="Ex.: +258 84 000 0000">
+    </div>
+    <div id="unlockHello" class="unlock-hello hidden"></div>
+
+    <label for="lgPin">PIN de 4 dígitos</label>
+    <input id="lgPin" type="password" inputmode="numeric" maxlength="4" autocomplete="off" placeholder="••••">
+
+    <label id="termsRow" class="check-row terms">
+      <input type="checkbox" id="lgTermos"><span>Li e aceito os <a href="#" id="verTermos">termos</a></span>
+    </label>
+
+    <div id="loginDica" class="login-dica"></div>
+    <div id="loginErro" class="login-erro" role="alert"></div>
+    <button id="loginBtn" class="primary-btn" type="submit" disabled>Entrar</button>
+    <button id="resetBtn" class="link-btn hidden" type="button">Esqueci o PIN / usar outra conta</button>
+  </form>
+</div>
+
+<!-- ============ APP ============ -->
+<div class="app-shell hidden" id="appShell">
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="brand-mark"><img src="logo.svg" alt=""></div>
+      <div><strong>BLACK AI</strong><small>BLACK CORPORATION</small></div>
+    </div>
+    <button class="new-chat" id="newChat">＋ Nova conversa</button>
+    <div class="side-label">HISTÓRICO</div>
+    <div id="historyList" class="history-list"></div>
+    <div class="sidebar-bottom">
+      <button class="side-action" id="settingsBtn">⚙ Definições</button>
+      <button class="side-action" id="logoutBtn">⎋ Sair</button>
+      <small>As conversas ficam guardadas neste dispositivo.</small>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn mobile-menu" id="menuBtn" aria-label="Abrir menu">☰</button>
+      <div class="top-title"><span class="status-dot"></span><span>BLACK AI</span><small id="modeLabel">Assistente online</small></div>
+      <div class="top-actions">
+        <button class="mini" id="btnPdf" title="Baixar conversa em PDF">PDF</button>
+        <button class="mini" id="btnTxt" title="Baixar conversa em TXT">TXT</button>
+        <select id="language" aria-label="Idioma"><option value="pt">PT</option><option value="en">EN</option></select>
+        <button class="icon-btn" id="clearBtn" title="Limpar conversa" aria-label="Limpar conversa">⌫</button>
+      </div>
+    </header>
+
+    <section class="chat-scroll" id="chatScroll">
+      <div class="welcome" id="welcome">
+        <div class="hero-mark"><img src="logo.svg" alt="BLACK AI"></div>
+        <div class="eyebrow">INFORMAÇÃO • CONTEÚDO • APRENDIZAGEM</div>
+        <h1>O conhecimento começa <span>aqui.</span></h1>
+        <p>Estuda, pesquisa, aprende e explora novas ideias com a BLACK AI.</p>
+        <div class="suggestions">
+          <button class="suggestion" data-prompt="Explica equações do segundo grau passo a passo."><span>∑</span><b>Resolver exercícios</b><small>Aprende passo a passo</small></button>
+          <button class="suggestion" data-prompt="Ensina-me Python desde o início com um exemplo simples."><span>⌘</span><b>Aprender programação</b><small>Python, HTML e mais</small></button>
+          <button class="suggestion" data-prompt="Resume o método científico e dá exemplos."><span>▤</span><b>Resumir uma matéria</b><small>Estuda com clareza</small></button>
+          <button class="suggestion" data-prompt="Ajuda-me a organizar um plano de estudo semanal."><span>◷</span><b>Plano de estudo</b><small>Organiza a aprendizagem</small></button>
+        </div>
+        <div class="notice"><span>✦</span> A IA pode cometer erros. Confirma informações importantes e verifica os cálculos.</div>
+      </div>
+      <div id="messages" class="messages" aria-live="polite"></div>
+      <div id="typing" class="typing hidden"><span></span><span></span><span></span><small>A BLACK AI está a pensar…</small></div>
+    </section>
+
+    <section class="composer-wrap">
+      <form id="chatForm" class="composer">
+        <textarea id="prompt" rows="1" placeholder="Pergunta alguma coisa à BLACK AI…" aria-label="Mensagem" required></textarea>
+        <button type="submit" class="send-btn" id="sendBtn" aria-label="Enviar mensagem">↑</button>
+      </form>
+      <div class="composer-foot"><span>BLACK AI pode errar. Não introduzas palavras-passe nem dados privados.</span><span id="connectionState">A preparar…</span></div>
+      <div class="credits">
+        <span>Criada pela empresa <b>BLACK CORPORATION</b></span>
+        <span>E-mail: <a href="mailto:blackcorporation.inf@gmail.com">blackcorporation.inf@gmail.com</a></span>
+        <span>Alfredo Duarte</span>
+      </div>
+    </section>
+  </main>
+</div>
+
+<!-- ============ FEEDBACK ============ -->
+<button id="fbFab" class="fb-fab hidden" aria-label="Dar feedback">★ Feedback</button>
+<div id="fbPanel" class="fb-panel hidden" role="dialog" aria-label="Feedback">
+  <button class="fb-close" id="fbClose" aria-label="Fechar">×</button>
+  <h3>Como está a sua satisfação?</h3>
+  <p>Toque nas estrelas (1 a 6).</p>
+  <div class="stars" id="stars"></div>
+  <div id="fbAfter" class="fb-after hidden">
+    <div class="fb-label" id="fbLabel"></div>
+    <div>Envie sua sugestão, reclamação ou agradecimento pelo e-mail <b>blackcorporation.inf@gmail.com</b></div>
+    <div class="fb-actions">
+      <a id="fbMailto" class="principal" href="#">Enviar por e-mail</a>
+      <a id="fbGmail" class="sec" href="#" target="_blank" rel="noopener">Abrir no Gmail (navegador)</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ DIÁLOGOS ============ -->
+<dialog id="settingsDialog" class="settings-dialog">
+  <form method="dialog"><button class="dialog-close" aria-label="Fechar">×</button></form>
+  <div class="eyebrow">PERSONALIZAÇÃO</div><h2>Definições</h2>
+  <label class="check-row"><input type="checkbox" id="saveHistory" checked> Guardar histórico neste dispositivo</label>
+  <p class="setting-note">As respostas são geradas por serviços externos gratuitos, que podem ter limites ou ficar indisponíveis. Não introduza dados sensíveis.</p>
+  <button class="primary-btn" id="saveSettings" type="button">Guardar definições</button>
+  <button class="link-btn" id="openTerms" type="button">Ver termos de uso</button>
+</dialog>
+
+<dialog id="termsDialog" class="settings-dialog terms-dialog">
+  <form method="dialog"><button class="dialog-close" aria-label="Fechar">×</button></form>
+  <div class="eyebrow">BLACK CORPORATION</div><h2>Termos de uso</h2>
+  <ol>
+    <li>A BLACK AI é um assistente de informação e aprendizagem. Pode cometer erros: confirme informações importantes antes de decidir com base nelas.</li>
+    <li>O nome, o número de telefone e o PIN que você informa ficam guardados apenas neste aparelho. Não são enviados a um servidor da BLACK CORPORATION. O PIN serve só como bloqueio local.</li>
+    <li>As suas perguntas são enviadas a serviços externos (motor de IA gratuito e Wikipédia) para gerar as respostas. Não escreva senhas, dados bancários ou informações sensíveis.</li>
+    <li>O feedback só é enviado se você decidir enviá-lo pelo seu e-mail, para blackcorporation.inf@gmail.com.</li>
+    <li>Não use a BLACK AI para fins ilegais, para prejudicar outras pessoas ou para obter conselhos médicos, jurídicos ou financeiros definitivos.</li>
+    <li>O serviço é oferecido sem garantia de disponibilidade ou de exatidão das respostas.</li>
+    <li>Contacto: blackcorporation.inf@gmail.com</li>
+  </ol>
+</dialog>
+
+<div id="toast" class="toast" role="status"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" defer></script>
+<script src="app.js" defer></script>
+</body>
+</html>
