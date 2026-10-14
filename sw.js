@@ -1,5 +1,5 @@
 // Mude o número da versão sempre que publicar uma atualização.
-const CACHE = 'black-ai-v2';
+const CACHE = 'black-ai-v3';
 const FILES = ['./', './index.html', './style.css', './app.js', './manifest.webmanifest',
                './icon.svg', './logo.svg', './icon-192.png', './icon-512.png'];
 

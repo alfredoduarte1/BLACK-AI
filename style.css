@@ -49,3 +49,13 @@
 .terms-dialog{max-height:85vh;overflow:auto}
 .terms-dialog ol{padding-left:18px;font-size:13px;color:#c3c3ce;line-height:1.6}
 @media(max-width:760px){.sug{padding-left:0}.fb-fab{bottom:160px}.fb-panel{bottom:210px}}
+
+/* ===== pop-up de instalar ===== */
+.install-pop{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));z-index:40;width:min(440px,calc(100% - 24px));display:grid;grid-template-columns:52px 1fr;gap:6px 12px;align-items:center;background:#101722;border:1px solid #2b3b52;border-radius:18px;padding:14px;box-shadow:0 20px 60px #000c;animation:subir .35s ease}
+.install-pop img{width:52px;height:52px;grid-row:1}
+.install-text{display:flex;flex-direction:column;gap:3px;font-size:13px;line-height:1.4;color:#c3c3ce}
+.install-text b{color:#fff;font-size:15px}
+.install-actions{grid-column:1/-1;display:flex;gap:8px;margin-top:6px}
+.install-actions button{flex:1;border:0;border-radius:10px;padding:11px;font-weight:700;font-size:14px;background:#1f6fd1;color:#fff}
+.install-actions button.ghost{background:transparent;border:1px solid #2b3b52;color:#c3c3ce;font-weight:600}
+@keyframes subir{from{opacity:0;transform:translate(-50%,20px)}to{opacity:1;transform:translate(-50%,0)}}

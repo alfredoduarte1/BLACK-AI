@@ -2,7 +2,7 @@
 'use strict';
 const $ = id => document.getElementById(id);
 const EMAIL = 'blackcorporation.inf@gmail.com';
-const K = { profile: 'blackai_profile_v1', chats: 'blackai_chats_v2', settings: 'blackai_settings_v2', session: 'blackai_session_v1' };
+const K = { profile: 'blackai_profile_v1', chats: 'blackai_chats_v2', settings: 'blackai_settings_v2', session: 'blackai_session_v1', installDismiss: 'blackai_install_dismiss' };
 
 /* ---------- utilidades ---------- */
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -386,6 +386,56 @@ function escolherEstrelas(n) {
 $('fbFab').onclick = () => $('fbPanel').classList.toggle('hidden');
 $('fbClose').onclick = () => $('fbPanel').classList.add('hidden');
 
+
+/* =====================================================
+   POP-UP PARA INSTALAR NO CELULAR
+   ===================================================== */
+let installEvt = null;
+const standalone = () => (window.matchMedia && matchMedia('(display-mode: standalone)').matches) || navigator.standalone === true;
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+const isMobile = isIOS || /Android/i.test(navigator.userAgent);
+const popVisivel = () => !$('installPop').classList.contains('hidden');
+
+function abrirInstalar(forcar) {
+  if (standalone()) return;
+  if (!installEvt && !isMobile) { if (forcar) toast('Use o menu do navegador para instalar o app.'); return; }
+  const yes = $('installYes');
+  if (installEvt) {
+    $('installMsg').textContent = 'Tenha a BLACK AI na tela inicial do seu celular, como um app. É grátis e abre em tela cheia.';
+    yes.textContent = 'Instalar agora'; yes.dataset.mode = 'prompt';
+  } else if (isIOS) {
+    $('installMsg').textContent = 'No Safari, toque em Compartilhar (o quadrado com a seta) e depois em «Adicionar à Tela de Início».';
+    yes.textContent = 'Entendi'; yes.dataset.mode = 'ok';
+  } else {
+    $('installMsg').textContent = 'Toque no menu ⋮ do navegador e escolha «Instalar app» ou «Adicionar à tela inicial».';
+    yes.textContent = 'Entendi'; yes.dataset.mode = 'ok';
+  }
+  $('installPop').classList.remove('hidden');
+}
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault(); installEvt = e;
+  if (!$('appShell').classList.contains('hidden')) { $('installSide').classList.remove('hidden'); if (popVisivel()) abrirInstalar(false); }
+});
+window.addEventListener('appinstalled', () => {
+  installEvt = null; $('installPop').classList.add('hidden'); $('installSide').classList.add('hidden'); toast('BLACK AI instalada!');
+});
+$('installYes').onclick = async () => {
+  if ($('installYes').dataset.mode === 'prompt' && installEvt) {
+    installEvt.prompt();
+    try { await installEvt.userChoice; } catch {}
+    installEvt = null;
+  }
+  $('installPop').classList.add('hidden');
+};
+$('installNo').onclick = () => { $('installPop').classList.add('hidden'); store.set(K.installDismiss, Date.now()); };
+$('installSide').onclick = () => { $('sidebar').classList.remove('open'); abrirInstalar(true); };
+function talvezMostrarInstalar() {
+  if (standalone()) { $('installSide').classList.add('hidden'); return; }
+  if (isMobile || installEvt) $('installSide').classList.remove('hidden');
+  if (Date.now() - store.get(K.installDismiss, 0) < 3 * 86400000) return; // não insistir por 3 dias
+  setTimeout(() => { if (!$('appShell').classList.contains('hidden')) abrirInstalar(false); }, 1800);
+}
+
 /* =====================================================
    ENTRAR NO APP
    ===================================================== */
@@ -396,6 +446,7 @@ function entrar() {
   estrelas = 0; pintarEstrelas(); $('fbAfter').classList.add('hidden');
   initChats(); renderAll();
   els.connection.textContent = navigator.onLine ? 'Ligação disponível' : 'Sem Internet';
+  talvezMostrarInstalar();
 }
 
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) navigator.serviceWorker.register('./sw.js').catch(() => {});
